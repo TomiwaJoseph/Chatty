@@ -6,6 +6,8 @@ $(document).ready(function () {
         document.getElementById("search_text").focus();
     });
 
-    $('.search_form')
+    $('.message_tins .fa-search').click(function () {
+        console.log('working')
+    })
 
 });

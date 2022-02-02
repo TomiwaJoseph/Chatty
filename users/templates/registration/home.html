@@ -1,0 +1,35 @@
+{% extends 'chat/base.html' %}
+
+{% block content %}
+<div class="row bg-dark">
+    
+    <div class="col-md-6 text-center">
+        <div id="homeCarou" class="carousel slide" data-ride="carousel">
+            <ol class="carousel-indicators">
+                <li data-target="#homeCarou" data-slide-to="0" class="active"></li>
+                <li data-target="#homeCarou" data-slide-to="1"></li>
+                <li data-target="#homeCarou" data-slide-to="2"></li>
+            </ol>
+            <div class="carousel-inner">
+                <div class="carousel-item active">
+                    <img src="/media/download (3).png" alt="home image 2" class="img-fluid">
+                </div>
+                <div class="carousel-item">
+                    <img src="/media/download (4).png" alt="home image 1" class="img-fluid">
+                </div>
+                <div class="carousel-item">
+                    <img src="/media/download (5).png" alt="home image 3" class="img-fluid">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mx-auto my-auto text-center chatty">
+        <img src="/media/chatty.png" alt="app logo" class="img-fluid">
+        <h3>Welcome to Chatty</h3>
+        <p>Chat with your friends, foes, boss, demons, adversaries, allies etc anywhere, anytime.</p>
+        <a href="{% url 'login' %}" class="btn start mb-5">Start Chatty</a>
+    </div>
+
+</div>
+
+{% endblock %}
