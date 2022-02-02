@@ -1,0 +1,130 @@
+body {
+    font-family: 'montserrat';
+    background-image: linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)), url('/media/official-whatsapp-background-image.jpg');
+    /* z-index: -1; */
+}
+a,
+a:hover {
+    text-decoration: none;
+}
+
+/* <------------------ Home Page --------------------------> */
+.start:hover {
+    color: #fff;
+    background: #1c43c5;
+    border: 1px solid #1c43c5;
+}
+.start {
+    background: #2b55df;
+    color: #fff;
+    outline: none;
+    border: 1px solid #2b55df;
+    width: 100%;
+    font-family: 'montserrat';
+    border-radius: 25px;
+    padding: 10px 0 10px 0;
+    background-image: linear-gradient(to right, #345ee9 0%, #2147c4 50%,
+        #1d42bb 100%);
+    transition: 0.5s;
+}
+.start:hover {
+    background-position: right center;
+}
+.row.bg-dark{
+    padding: 50px 0 50px 0;
+    margin-top: 5rem;
+}
+.carousel-indicators li{
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+}
+.carousel-indicators li.active{
+    background-color: #2b55df;
+}
+.carousel-item img{
+    height: 450px;
+    width: 450px;
+}
+.chatty h3{
+    color: #fff;
+}
+.chatty p {
+    color: #d6d6d6;
+}
+.chatty a {
+    font-weight: 600;
+}
+.chatty img {
+    margin-bottom: 20px;
+    margin-top: 20px;
+    height: 100px;
+    width: 100px;
+}
+
+/* <------------------ Login Page --------------------------> */
+
+.heading h2{
+    color: #fff;
+}
+.heading hr{
+    background-color: #fff;
+}
+.forgot_password {
+    color: #333333;
+    margin-bottom: 10px;
+}
+.forgot_password:hover{
+    color: #2b55df;
+}
+
+.content-section:hover {
+    box-shadow: 0 0 10px #2b55df;
+    -webkit-transition: all 0.5s ease;
+    transition: all 0.5s ease;
+}
+
+.content-section {
+    background: #ffffff;
+    padding: 10px 20px;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+    margin-bottom: 20px;
+}
+.form-control:focus {
+    -webkit-box-shadow: 0 3px 10px -2px #2b55df !important;
+    box-shadow: 0 3px 10px -2px #2b55df !important;
+    color: #000;
+    border: 1px none;
+}
+.login_media i {
+    font-size: 24px;
+    margin-bottom: 8px;
+    padding: 10px;
+    color: #fff;
+    border-radius: 3px;
+}
+.alte {
+    margin-bottom: 10px;
+}
+.login_media .fa-facebook-f {
+    background-color: #3b5998;
+}
+.login_media .fa-google {
+    background-color: #db4a39;
+}
+#design_hr {
+    background-color: #2b55df;
+}
+
+/* <------------------ Password Reset --------------------------> */
+
+.password_reset img{
+    margin-bottom: 20px;
+    margin-top: 20px;
+    height: 300px;
+    width: 300px;
+}
+.heading hr {
+    width: 75%;
+}

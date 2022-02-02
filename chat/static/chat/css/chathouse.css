@@ -1,0 +1,125 @@
+/* <------------------ Contact List --------------------------> */
+
+/* .chat {
+    margin-top: auto;
+    margin-bottom: auto;
+} */
+
+.search_form {
+    display: none;
+}
+
+.message_tins .fa-search {
+    color: #fff;
+    font-size: 24px;
+    margin-top: 15px;
+    cursor: pointer;
+}
+
+.new_des span,
+.new_des p {
+    margin-left: 15px;
+}
+.new_des span {
+    font-size: 20px;
+    color: white;
+}
+.new_des p {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.6);
+}
+
+.contact_list .card,
+.message_tins .card{
+    height: 90%;
+    border-radius: 15px !important;
+    background-color: rgba(0, 0, 0, 0.9) !important;
+}
+.contact_list .card-header,
+.message_tins .card-header,
+.message_tins .card-footer{
+    background-color: rgba(41, 70, 233, 0.3) !important;
+}
+.contact_list .auth_user span {
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+}
+.contact_list .auth_user p {
+    font-size: 12px;
+}
+.contact_list .auth_user
+.fa-pen {
+    color: #fff;
+    font-size: 24px;
+}
+.user_info {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 15px;
+}
+.user_info span {
+    font-size: 20px;
+    color: white;
+}
+.user_info p {
+    font-size: 10px;
+    color: rgba(255, 255, 255, 0.6);
+}
+.img_cont {
+    position: relative;
+    height: 70px;
+    width: 70px;
+}
+.user_img {
+    height: 70px;
+    width: 70px;
+    border: 1.5px solid #f5f6fa;
+}
+.online_icon {
+    position: absolute;
+    height: 15px;
+    width: 15px;
+    background-color: #4cd137;
+    border-radius: 50%;
+    bottom: 0.2em;
+    right: 0.4em;
+    border: 1.5px solid white;
+}
+.offline {
+    background-color: #c23616 !important;
+}
+.search {
+    border-radius: 15px 0 0 15px !important;
+    background-color: rgba(0, 0, 0, 0.3) !important;
+    border: 0 !important;
+    color: white !important;
+}
+.search:focus {
+    box-shadow: none !important;
+    outline: 0px !important;
+}
+.search_btn {
+    border-radius: 0 15px 15px 0 !important;
+    background-color: rgba(0, 0, 0, 0.3) !important;
+    border: 0 !important;
+    color: white !important;
+    cursor: pointer;
+}
+.contacts {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: 440px;
+    overflow: auto;
+}
+.contacts li {
+    width: 100% !important;
+    padding: 5px 10px;
+    margin-bottom: 15px !important;
+}
+.contacts li.active {
+    /* background-color: rgba(0, 0, 0, 0.3) !important; */
+    background-color: #007bff;
+}
+
