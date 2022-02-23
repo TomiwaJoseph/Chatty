@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'widget_tweaks',
     'social_django',
+    'channels',
 ]
 
 MIDDLEWARE = [
@@ -65,7 +66,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'tchat.wsgi.application'
+# WSGI_APPLICATION = 'tchat.wsgi.application'
+ASGI_APPLICATION = 'tchat.asgi.application'
 
 
 # Database
