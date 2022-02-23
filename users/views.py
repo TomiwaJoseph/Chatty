@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import CustomUser
+from .models import CustomUser, Profile
 from django.contrib.sites.shortcuts import get_current_site
 from django.utils.encoding import force_bytes, force_text
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode, is_safe_url
@@ -7,10 +7,78 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.core.mail import EmailMessage
 from .tokens import account_activation_token
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout
-from .forms import SignupForm
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
+from .forms import SignupForm, UserUpdateForm, ChangeUserProfile, ChangePasswordForm
 from django.urls import reverse
+from django.template.loader import render_to_string
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
+
+# -------------- Ajax requests --------------------
+
+@login_required
+def show_user_profile(request):
+    user_profile = CustomUser.objects.get(email=request.user.email)
+    t = render_to_string('users/ajax_pages/profile_view.html', {"user_profile": user_profile})
+    return JsonResponse({"profile": t})
+
+@login_required
+def show_user_edit_profile(request):
+    user_update_form = UserUpdateForm(instance=request.user)
+    user_profile_update_form = ChangeUserProfile(
+        instance=Profile.objects.get(user=request.user)
+        )
+    t = render_to_string('users/ajax_pages/update_profile.html', {
+        'user_update_form': user_update_form,
+        'user_profile_update_form': user_profile_update_form,
+    })
+    return JsonResponse({"forms": t})
+
+@login_required
+def show_user_edit_password(request):
+    change_password_form = ChangePasswordForm()
+    t = render_to_string('users/ajax_pages/update_password.html', {
+        'change_password_form': change_password_form,
+    })
+    return JsonResponse({"form": t})
+
+@login_required
+def update_user_profile(request):
+    update_form = UserUpdateForm(request.POST, instance=request.user)
+    profile_update_form = ChangeUserProfile(
+        request.POST, request.FILES,
+        instance=Profile.objects.get(user=request.user)
+        )
+       
+    if update_form.is_valid():
+        update_form.save()
+        
+    if profile_update_form.is_valid():
+        profile_update_form.save()
+        
+    return JsonResponse({'status': 'success'})
+
+@login_required
+def update_user_password(request):
+    change_password_form = ChangePasswordForm(request.POST)
+    
+    if change_password_form.is_valid():
+        email = request.user.email
+        old_password = change_password_form.cleaned_data['old_password']
+        new_password = change_password_form.cleaned_data['new_password']
+
+        user = authenticate(username=email, password=old_password)
+        if user is not None:
+            user.set_password(new_password)
+            user.save()
+            update_session_auth_hash(request, user)
+            return JsonResponse({"status": 'success'})
+        else:
+            return JsonResponse({"status": 'failure'})
+        
+# -------------- Ajax requests --------------------
 
 def home(request):
     return render(request, 'registration/home.html')
@@ -54,6 +122,7 @@ def login_view(request):
         login(request, user)
         return redirect('chathouse')
     else:
+        messages.error(request, "Invalid Login")
         return redirect('login')
 
 def activate(request, uidb64, token):
