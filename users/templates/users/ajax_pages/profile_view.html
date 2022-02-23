@@ -1,0 +1,22 @@
+
+
+
+<div class="card">
+    <div class="card-body text-center">
+        <div class="msg_container">
+            <div class="alert" id="the_alert">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close"></a>
+                <strong></strong>
+            </div>
+        </div>
+        <div class="profile">
+            <img src="{{ user_profile.profile.profile_picture.url }}" class="rounded-circle profile_view">
+            <h1>{{ user_profile }}</h1>
+            <p>{{ user_profile.email }}</p>
+            <p><span>Status:</span><br>{{ user_profile.profile.status }}</p>
+            <p><span>Description:</span><br>{{ user_profile.profile.description }}</p>
+        </div>
+    </div>
+</div>
+
+
