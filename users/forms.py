@@ -2,7 +2,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
 from django import forms
 from django.core.exceptions import ValidationError
-# from .models import Profile
+from .models import Profile
 from django.contrib.auth import authenticate
 
 
@@ -42,5 +42,23 @@ class UserUpdateForm(forms.ModelForm):
     class Meta:
         model = get_user_model()
         fields = ('first_name', 'last_name')
+
+
+class ChangeUserProfile(forms.ModelForm):
+    profile_picture = forms.ImageField(required=False,
+        widget=forms.FileInput, error_messages={'invalid':('Image files only')})
+
+    class Meta:
+        model = Profile
+        fields = ('profile_picture', 'status', 'description')
+
+
+class ChangePasswordForm(forms.Form):
+    old_password = forms.CharField(widget=forms.PasswordInput(
+        render_value=False, attrs={"class": "form-control", 
+        "type": "password", "placeholder": "Enter old password"}))
+    new_password = forms.CharField(label="New password", widget=forms.PasswordInput(
+        render_value=False, attrs={"class": "form-control", 
+        "type": "password", "placeholder": "New password"}))
 
 
