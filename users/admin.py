@@ -26,4 +26,7 @@ class UserAdmin(BaseUserAdmin):
     ordering = ('email', 'first_name', 'last_name')
 
 
-admin.site.register(Profile)
+class ProfileAdmin(admin.ModelAdmin):
+    list_display = ['user', 'description', 'status']
+
+admin.site.register(Profile, ProfileAdmin)
