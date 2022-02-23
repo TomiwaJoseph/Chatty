@@ -1,7 +1,10 @@
-body {
+body,
+html {
     font-family: 'montserrat';
     background-image: linear-gradient(rgba(255,255,255,0.7), rgba(255,255,255,0.7)), url('/media/official-whatsapp-background-image.jpg');
-    /* z-index: -1; */
+    height: 98%;
+    margin: 0;
+    overflow: hidden;
 }
 a,
 a:hover {
@@ -31,7 +34,7 @@ a:hover {
     background-position: right center;
 }
 .row.bg-dark{
-    padding: 50px 0 50px 0;
+    padding-top: 20px;
     margin-top: 5rem;
 }
 .carousel-indicators li{
@@ -45,6 +48,7 @@ a:hover {
 .carousel-item img{
     height: 450px;
     width: 450px;
+    background: none !important;
 }
 .chatty h3{
     color: #fff;
@@ -64,6 +68,17 @@ a:hover {
 
 /* <------------------ Login Page --------------------------> */
 
+.alert-error {
+    color: #fff;
+    background-color: #b61422;
+    border-color: #b61422;
+}
+.login_error {
+    margin-top: -85px !important;
+}
+.login_error small {
+    color: #fff;
+}
 .heading h2{
     color: #fff;
 }
