@@ -65,7 +65,7 @@ class CustomUser(AbstractUser):
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="profile")
     profile_picture = models.ImageField(default='user.png', upload_to='profile_pics')
-    # description = models.CharField(max_length=25)
+    description = models.CharField(max_length=25)
     status = models.CharField(max_length=25)
     
     def __str__(self):
