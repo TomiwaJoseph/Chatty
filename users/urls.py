@@ -22,4 +22,12 @@ urlpatterns = [
         name='password_reset_complete'),
     path('awaiting-activation/', views.awaiting_activation, name='awaiting_activation'),
     path('activate/<uidb64>/<token>/', views.activate, name='activate'),
+    
+    # -------------- Ajax requests --------------------
+    path('show_user_profile/', views.show_user_profile),
+    path('show_user_edit_profile/', views.show_user_edit_profile),
+    path('show_user_edit_password/', views.show_user_edit_password),
+    path('update_user_profile/', views.update_user_profile),
+    path('update_user_password/', views.update_user_password),
+    # -------------- Ajax requests --------------------
 ]
