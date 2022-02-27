@@ -6,18 +6,6 @@ $(document).ready(function(){
     let the_strong = "";
     let alert_type = "";
 
-    $('.contacts li').on('click', function (){
-        $('.contacts .active').removeClass('active');
-        $(this).addClass('active');
-        $.ajax({
-            url: '/show_chat_messages/',
-            dataType: 'json',
-            success: function(response){
-                $('#action_container').html(response.conversation);
-            }
-        });
-    })
-
     $('.chat_search_form').submit(function (e) {
         e.preventDefault();
         console.log('form submitted');
