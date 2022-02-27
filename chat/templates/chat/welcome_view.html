@@ -3,8 +3,8 @@
 
 {% block content %}
 
-
-<div class="container h-100">    
+<div class="container h-100">  
+    <input type="hidden" id="logged-in-user" value="{{ user.id }}">
     <div class="row justify-content-center h-100">
         <div class="col-md-4 col-xl-4 chat h-100 mt-4">
             <div class="card mb-sm-3 mb-md-0 contacts_card">
@@ -42,146 +42,133 @@
                 </div>
                 <div class="card-body contacts_body">
                     <ul class="contacts">
-                        <li class="active">
-                            <div class="d-flex bd-highlight">
-                                <div class="img_cont">
-                                    <img src="/media//Basic_Ui_(154).jpg" class="rounded-circle user_img">
-                                    <span class="online_icon"></span>
+                        {% for thread in Threads %}
+                            <!-- <li class="{% if forloop.first %}active{% endif %} contact-li" chat-id="chat_{{ thread.id }}"> -->
+                            <li class="contact-li" chat-id="chat_{{ thread.id }}">
+                                <div class="d-flex bd-highlight">
+                                    <div class="img_cont">
+                                        {% if thread.first_person == user %}
+                                            <img src="{{ thread.second_person.profile.profile_picture.url }}" class="rounded-circle user_img">
+                                        {% else %}
+                                            <img src="{{ thread.first_person.profile.profile_picture.url }}" class="rounded-circle user_img">
+                                        {% endif %}
+                                        <!-- <span class="online_icon"></span> -->
+                                    </div>
+                                    <div class="user_info">
+                                        {% if thread.first_person ==  user %}
+                                            <span>{{ thread.second_person.get_name }}</span>
+                                            <p>{{ thread.second_person.first_name }} is online</p>
+                                        {% else %}
+                                            <span>{{ thread.first_person.get_name }}</span>
+                                            <p>{{ thread.first_person.first_name }} is online</p>
+                                        {% endif %}    
+                                    </div>
                                 </div>
-                                <div class="user_info">
-                                    <span>Khalid</span>
-                                    <p>Kalid is online</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="d-flex bd-highlight">
-                                <div class="img_cont">
-                                    <img src="/media/chatty.png" class="rounded-circle user_img">
-                                    <span class="online_icon offline"></span>
-                                </div>
-                                <div class="user_info">
-                                    <span>Nargis Hawa</span>
-                                    <p>Nargis left 30 mins ago</p>
-                                </div>
-                            </div>
-                        </li>
-                        <li>
-                            <div class="d-flex bd-highlight">
-                                <div class="img_cont">
-                                    <img src="/media/user.png" class="rounded-circle user_img">
-                                    <span class="online_icon"></span>
-                                </div>
-                                <div class="user_info">
-                                    <span>MarvyCodes</span>
-                                    <p>MarvyCodes is online</p>
-                                </div>
-                            </div>
-                        </li>
+                            </li>
+                        {% endfor %}
                     </ul>
                 </div>
                 <div class="card-footer"></div>
             </div>
         </div>
         <div class="col-md-8 col-xl-8 chat h-100 mt-4" id='action_container'>
-            <!-- <div class="card">
+            <div class="card welcome_greeting">
                 <div class="card-header"></div>
                 <div class="card-body welcome_img mx-auto text-center">
                     <img class="img-fluid" src="/media/download (9).png">
                     <h1>Welcome, {{ user.get_name }}!</h1>
                     <p>Now send and receive messages with your contacts.<br>Click on existing contact or add new ones.</p>
                 </div>
-            </div> -->
-            <div class="card message_tins">
-                <div class="card-header">
-                    <div class="d-flex justify-content-between mt-3">
-                        <div>
-                            <div class="d-flex justify-content-between">
+            </div>
+            <div class="card d-none message_tins">
+                {% for thread in Threads %}
+                    <div class="messages-wrapper {% if forloop.first %} hide is_active {% else %} hide {% endif %}"
+                    chat-id="chat_{{ thread.id }}" other-user-id="
+                        {% if thread.first_person == user %}
+                            {{ thread.second_person.id }}
+                        {% else %}
+                            {{ thread.first_person.id }}
+                        {% endif %}
+                    ">
+                        <div class="d-none" id="other_user_picture">
+                            {% if thread.first_person == user %}
+                                {{ thread.second_person.profile.profile_picture.url }}
+                            {% else %}
+                                {{ thread.first_person.profile.profile_picture.url }}
+                            {% endif %}
+                        </div>
+                        <div class="card-header">
+                            <div class="d-flex justify-content-between mt-3">
                                 <div>
-                                    <img src="/media/Basic_Ui_(154).jpg" class="rounded-circle user_img" alt="">
+                                    <div class="d-flex justify-content-between">
+                                        <div>
+                                            {% if thread.first_person == user %}
+                                                <img src="{{ thread.second_person.profile.profile_picture.url }}" class="rounded-circle user_img">
+                                            {% else %}
+                                                <img src="{{ thread.first_person.profile.profile_picture.url }}" class="rounded-circle user_img">
+                                            {% endif %}
+                                        </div>
+                                        <div class="new_des mt-2">
+                                            {% if thread.first_person == user %}
+                                                <span>{{ thread.second_person.get_name }}</span>
+                                                <p>{{ thread.second_person.profile.description }}</p>
+                                            {% else %}
+                                                <span>{{ thread.first_person.get_name }}</span>
+                                                <p>{{ thread.first_person.profile.description }}</p>
+                                            {% endif %}
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="new_des mt-2">
-                                    <span>Mary Jane</span>
-                                    <p>Data Analyst</p>
+                                <div>
+                                    <i class="fa fa-search"></i>
+                                    <span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>
                                 </div>
                             </div>
-                        </div>
-                        <div>
-                            <i class="fa fa-search"></i>
-                            <span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>
-                        </div>
-                    </div>
-                    <form method="POST" class="chat_search_form mt-3">
-                        {% csrf_token %}
-                        <input type="search" name="search" id="search_text" class="form-control" placeholder="Search chat">
-                    </form>
-                    <div class="action_menu">
-                        <ul>
-                            <li data-name="View profile"><i class="fas fa-user-circle"></i> View profile</li>
-                            <li data-name="Add to favorites"><i class="fas fa-plus"></i> Add to favorites</li>
-                            <li data-name="Block"><i class="fas fa-ban"></i> Block</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="card-body msg_card_body">
-                    <!-- All Messages -->
-                    <div class="sender">
-                        <div class="d-flex received">
-                            <div class="img_cont_msg">
-                                <img src="/media/Basic_Ui_(154).jpg" class="rounded-circle user_img_msg mb-3">
-                            </div>
-                            <div class="sender_message_container">
-                                Hey!
+                            <form method="POST" class="chat_search_form mt-3">
+                                {% csrf_token %}
+                                <input type="search" name="search" id="search_text" class="form-control" placeholder="Search chat">
+                            </form>
+                            <div class="action_menu">
+                                <ul>
+                                    <li data-name="View profile"><i class="fas fa-user-circle"></i> View profile</li>
+                                    <li data-name="Add to favorites"><i class="fas fa-plus"></i> Add to favorites</li>
+                                    <li data-name="Block"><i class="fas fa-ban"></i> Block</li>
+                                </ul>
                             </div>
                         </div>
-                        <p>8:40 AM, Today</p>
-                    </div>
-                    <div class="sender">
-                        <div class="d-flex received">
-                            <div class="img_cont_msg">
-                                <img src="/media/Basic_Ui_(154).jpg" class="rounded-circle user_img_msg mb-3">
-                            </div>
-                            <div class="sender_message_container">
-                                What's up? It's been ages.
-                            </div>
+                        <div class="card-body msg_card_body">
+                            <!-- All Messages -->
+                            {% for chat in thread.chatmessage_thread.all %}
+                                {% if chat.user == user %}
+                                    <div class="receiver">
+                                        <div class="d-flex replied">
+                                            <div class="receiver_message_container">
+                                                {{ chat.message }}
+                                            </div>
+                                            <div class="img_cont_msg">
+                                                <img src="{{ user.profile.profile_picture.url }}" class="rounded-circle user_img_msg">
+                                            </div>
+                                        </div>
+                                        <p>{{ chat.timestamp|date:"D M j" }}, {{ chat.timestamp|time:"H:i A" }}</p>
+                                    </div>
+                                {% else %}
+                                    <div class="sender">
+                                        <div class="d-flex received">
+                                            <div class="img_cont_msg">
+                                                <img src="{{ chat.user.profile.profile_picture.url }}" class="rounded-circle user_img_msg">
+                                            </div>
+                                            <div class="sender_message_container">
+                                                {{ chat.message }}
+                                            </div>
+                                        </div>
+                                        <p>{{ chat.timestamp|date:"D M j" }}, {{ chat.timestamp|time:"H:i A" }}</p>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                            <!-- All Messages -->
                         </div>
-                        <p>8:40 AM, Today</p>
                     </div>
-                    <div class="receiver">
-                        <div class="d-flex replied">
-                            <div class="receiver_message_container">
-                                Nothing is up, babe 🥰🥰
-                            </div>
-                            <div class="img_cont_msg">
-                                <img src="{{ user.profile.profile_picture.url }}" class="rounded-circle user_img_msg">
-                            </div>
-                        </div>
-                        <p>8:40 AM, Today</p>
-                    </div>
-                    <div class="receiver">
-                        <div class="d-flex replied">
-                            <div class="receiver_message_container">
-                                Guilty as charged...been busy 😅
-                            </div>
-                            <div class="img_cont_msg">
-                                <img src="{{ user.profile.profile_picture.url }}" class="rounded-circle user_img_msg">
-                            </div>
-                        </div>
-                        <p>8:40 AM, Today</p>
-                    </div>
-                    <div class="sender">
-                        <div class="d-flex received">
-                            <div class="img_cont_msg">
-                                <img src="/media/Basic_Ui_(154).jpg" class="rounded-circle user_img_msg mb-3">
-                            </div>
-                            <div class="sender_message_container">
-                                Missed you...
-                            </div>
-                        </div>
-                        <p>8:40 AM, Today</p>
-                    </div>
-                    <!-- All Messages -->
-                </div>
+                {% endfor %}
                 <div class="card-footer">
                     <form id="send-message-form" method="POST">
                         {% csrf_token %}
@@ -204,5 +191,7 @@
         </div>
     </div>
 </div>
+{{ logged_user_picture | json_script:"logged_user_picture"}}
 
 {% endblock %}
+
