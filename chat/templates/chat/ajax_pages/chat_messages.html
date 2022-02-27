@@ -1,95 +1,94 @@
 
 
 <div class="card message_tins">
-    <div class="card-header">
-        <div class="d-flex justify-content-between mt-3">
-            <div>
-                <div class="d-flex justify-content-between">
+    {% for thread in Threads %}
+        <div class="messages-wrapper {% if forloop.first %} hide is_active {% else %} hide {% endif %}"
+        chat-id="chat_{{ thread.id }}" other-user-id="
+            {% if thread.first_person == user %}
+                {{ thread.second_person.id }}
+            {% else %}
+                {{ thread.first_person.id }}
+            {% endif %}
+        ">
+            <div class="d-none" id="other_user_picture">
+                {% if thread.first_person == user %}
+                    {{ thread.second_person.profile.profile_picture.url }}
+                {% else %}
+                    {{ thread.first_person.profile.profile_picture.url }}
+                {% endif %}
+            </div>
+            <div class="card-header">
+                <div class="d-flex justify-content-between mt-3">
                     <div>
-                        <img src="/media/Basic_Ui_(154).jpg" class="rounded-circle user_img" alt="">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                {% if thread.first_person == user %}
+                                    <img src="{{ thread.second_person.profile.profile_picture.url }}" class="rounded-circle user_img">
+                                {% else %}
+                                    <img src="{{ thread.first_person.profile.profile_picture.url }}" class="rounded-circle user_img">
+                                {% endif %}
+                            </div>
+                            <div class="new_des mt-2">
+                                {% if thread.first_person == user %}
+                                    <span>{{ thread.second_person.get_name }}</span>
+                                    <p>{{ thread.second_person.profile.description }}</p>
+                                {% else %}
+                                    <span>{{ thread.first_person.get_name }}</span>
+                                    <p>{{ thread.first_person.profile.description }}</p>
+                                {% endif %}
+                            </div>
+                        </div>
                     </div>
-                    <div class="new_des mt-2">
-                        <span>Mary Jane</span>
-                        <p>Data Analyst</p>
+                    <div>
+                        <i class="fa fa-search"></i>
+                        <span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>
                     </div>
                 </div>
-            </div>
-            <div>
-                <i class="fa fa-search"></i>
-                <span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>
-            </div>
-        </div>
-        <form method="POST" class="chat_search_form mt-3">
-            {% csrf_token %}
-            <input type="search" name="search" id="search_text" class="form-control" placeholder="Search chat">
-        </form>
-        <div class="action_menu">
-            <ul>
-                <li data-name="View profile"><i class="fas fa-user-circle"></i> View profile</li>
-                <li data-name="Add to favorites"><i class="fas fa-plus"></i> Add to favorites</li>
-                <li data-name="Block"><i class="fas fa-ban"></i> Block</li>
-            </ul>
-        </div>
-    </div>
-    <div class="card-body msg_card_body">
-        <!-- All Messages -->
-        <div class="sender">
-            <div class="d-flex received">
-                <div class="img_cont_msg">
-                    <img src="/media/Basic_Ui_(154).jpg" class="rounded-circle user_img_msg mb-3">
-                </div>
-                <div class="sender_message_container">
-                    Hey!
+                <form method="POST" class="chat_search_form mt-3">
+                    {% csrf_token %}
+                    <input type="search" name="search" id="search_text" class="form-control" placeholder="Search chat">
+                </form>
+                <div class="action_menu">
+                    <ul>
+                        <li data-name="View profile"><i class="fas fa-user-circle"></i> View profile</li>
+                        <li data-name="Add to favorites"><i class="fas fa-plus"></i> Add to favorites</li>
+                        <li data-name="Block"><i class="fas fa-ban"></i> Block</li>
+                    </ul>
                 </div>
             </div>
-            <p>8:40 AM, Today</p>
-        </div>
-        <div class="sender">
-            <div class="d-flex received">
-                <div class="img_cont_msg">
-                    <img src="/media/Basic_Ui_(154).jpg" class="rounded-circle user_img_msg mb-3">
-                </div>
-                <div class="sender_message_container">
-                    What's up? It's been ages.
-                </div>
+            <div class="card-body msg_card_body">
+                <!-- All Messages -->
+                {% for chat in thread.chatmessage_thread.all %}
+                    {% if chat.user == user %}
+                        <div class="receiver">
+                            <div class="d-flex replied">
+                                <div class="receiver_message_container">
+                                    {{ chat.message }}
+                                </div>
+                                <div class="img_cont_msg">
+                                    <img src="{{ user.profile.profile_picture.url }}" class="rounded-circle user_img_msg">
+                                </div>
+                            </div>
+                            <p>{{ chat.timestamp|date:"D M j" }}, {{ chat.timestamp|time:"H:i A" }}</p>
+                        </div>
+                    {% else %}
+                        <div class="sender">
+                            <div class="d-flex received">
+                                <div class="img_cont_msg">
+                                    <img src="{{ chat.user.profile.profile_picture.url }}" class="rounded-circle user_img_msg">
+                                </div>
+                                <div class="sender_message_container">
+                                    {{ chat.message }}
+                                </div>
+                            </div>
+                            <p>{{ chat.timestamp|date:"D M j" }}, {{ chat.timestamp|time:"H:i A" }}</p>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                <!-- All Messages -->
             </div>
-            <p>8:40 AM, Today</p>
         </div>
-        <div class="receiver">
-            <div class="d-flex replied">
-                <div class="receiver_message_container">
-                    Nothing is up, babe 🥰🥰
-                </div>
-                <div class="img_cont_msg">
-                    <img src="{{ user.profile.profile_picture.url }}" class="rounded-circle user_img_msg">
-                </div>
-            </div>
-            <p>8:40 AM, Today</p>
-        </div>
-        <div class="receiver">
-            <div class="d-flex replied">
-                <div class="receiver_message_container">
-                    Guilty as charged...been busy 😅
-                </div>
-                <div class="img_cont_msg">
-                    <img src="{{ user.profile.profile_picture.url }}" class="rounded-circle user_img_msg">
-                </div>
-            </div>
-            <p>8:40 AM, Today</p>
-        </div>
-        <div class="sender">
-            <div class="d-flex received">
-                <div class="img_cont_msg">
-                    <img src="/media/Basic_Ui_(154).jpg" class="rounded-circle user_img_msg mb-3">
-                </div>
-                <div class="sender_message_container">
-                    Missed you...
-                </div>
-            </div>
-            <p>8:40 AM, Today</p>
-        </div>
-        <!-- All Messages -->
-    </div>
+    {% endfor %}
     <div class="card-footer">
         <form id="send-message-form" method="POST">
             {% csrf_token %}
