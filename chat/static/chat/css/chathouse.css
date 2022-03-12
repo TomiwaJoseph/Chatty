@@ -136,22 +136,22 @@
 .user_options .fa-plus,
 .user_options .fa-ellipsis-v {
   color: #fff;
-  font-size: 18px;
+  font-size: 24px;
   margin-top: 15px;
   cursor: pointer;
 }
 
 .user_options .fa-plus {
-  margin-right: 20px;
+  margin-right: 30px;
 }
 .contact_add_form {
   display: none;
 }
-#add_new_cont {
+#addContactModal input {
   border-radius: 15px 0 15px 0 !important;
-  background-color: rgba(0, 0, 0, 0.3) !important;
+  background-color: #fff !important;
   border: 0 !important;
-  color: white !important;
+  color: #000 !important;
 }
 .action_menu li a,
 .user_action_menu li a {
@@ -175,15 +175,47 @@
 .msg_container {
   padding-bottom: 100px;
 }
-.profile h1 {
+.contact_profile {
+  margin-top: 100px;
+}
+#searchChatModal .modal-content,
+#addContactModal .modal-content,
+#reportUserModal .modal-content,
+#editPasswordModal .modal-content,
+#editProfileModal .modal-content,
+#contactProfileModal .modal-content,
+#userProfileModal .modal-content{
+  background-color: rgb(12, 12, 12) !important;
+}
+#contactProfileModal .modal-dialog,
+#userProfileModal .modal-dialog{
+  width: 525px;
+}
+#searchChatModal .modal-dialog{
+  width: 525px;
+}
+.profile {
+  padding-top: 70px;
+  padding-bottom: 70px;
+}
+.edit_modal {
+  padding-top: 30px;
+  padding-bottom: 20px;
+}
+
+.edit_modal h1,
+.profile h1,
+.contact_profile h1 {
   color: #cccccc;
   font-size: 28px;
   margin-top: 10px;
 }
-.profile p {
+.profile p,
+.contact_profile p {
   color: #cccccc;
 }
-.profile p span {
+.profile span,
+.contact_profile p span {
   color: #e4de31;
 }
 .edit_profile {
@@ -199,13 +231,16 @@
   margin-top: -3px;
   margin-bottom: 20px;
 }
-#change_profile_details .text-left,
+#search_chat_form .text-left,
+#add_contact_form .text-left,
+#report_user_form .text-left,
 #change_profile_details .text-left,
 #change_password_details .text-left {
   color: #345ee9;
 }
-
-
+.modal-backdrop.show {
+  opacity: 0.9 !important;
+}
 
 
 
@@ -236,7 +271,8 @@
 }
 .msg_card_body {
   overflow-y: auto;
-  max-height: 72%;
+  max-height: 65%;
+  padding-bottom: 20px;
 }
 .card-header {
   border-radius: 15px 15px 0 0 !important;
@@ -310,8 +346,8 @@
   background-color: rgba(0, 0, 0, 0.3);
 }
 .user_img_logged {
-  height: 50px;
-  width: 50px;
+  height: 70px;
+  width: 70px;
   border: 1.5px solid #f5f6fa;
 }
 .user_img {
