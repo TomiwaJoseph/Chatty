@@ -1,6 +1,6 @@
 # Chatty
 
-This app is created for the sole purpose of chatting. Users sign up and add other contacts through their email and have amazing conversations...or not😎😎
+This app is created for the sole purpose of chatting. Users sign up and add other contacts through their email and have amazing conversations...or not😎😎. The app is more or less Whatsapp-y.
 
 ## Demo Website
 
