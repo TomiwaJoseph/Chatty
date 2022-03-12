@@ -67,9 +67,10 @@ class Profile(models.Model):
     profile_picture = models.ImageField(default='user.png', upload_to='profile_pics')
     description = models.CharField(max_length=25)
     status = models.CharField(max_length=25)
+    blocked_users = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name="blocked_list")
     
     def __str__(self):
-        return self.user.first_name + " " + self.user.last_name + " 's Profile"
+        return f'{self.user}' +"'s Profile"
     
     def save(self, *args, **kwargs):
         img = Image.open(self.profile_picture)
@@ -92,5 +93,5 @@ class Profile(models.Model):
                 f'{the_hex}.jpg', 'image/jpeg',
                 sys.getsizeof(output), None)
 
-        super().save(*args, **kwargs)
+        super(Profile, self).save(*args, **kwargs)
         
