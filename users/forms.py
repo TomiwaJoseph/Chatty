@@ -46,7 +46,7 @@ class UserUpdateForm(forms.ModelForm):
 
 class ChangeUserProfile(forms.ModelForm):
     profile_picture = forms.ImageField(required=False,
-        widget=forms.FileInput, error_messages={'invalid':('Image files only')})
+        widget=forms.FileInput(attrs={'id': 'profile_picture'}), error_messages={'invalid':('Image files only')})
 
     class Meta:
         model = Profile
