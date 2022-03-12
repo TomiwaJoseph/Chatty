@@ -1,4 +1,6 @@
 {% extends 'chat/base.html' %}
+{% load i18n widget_tweaks %}
+{% load chat_tags %}
 
 
 {% block content %}
@@ -22,28 +24,14 @@
                         <ul>
                             <li data-name="User profile" id="view_profile"><i class="fas fa-user-circle"></i> Profile</li>
                             <li data-name="Edit profile"><i class="fas fa-pen"></i> Edit Profile</li>
-                            <li data-name="Change password"><i class="fas fa-lock"></i> Change Password</li>
+                            <li data-name="Change password"><i class="fas fa-key"></i> Change Password</li>
                             <li><a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
                         </ul>
                     </div>
-                    <form method="POST" class="contact_search mt-3">
-                        {% csrf_token %}
-                        <div class="input-group">
-                            <input type="text" placeholder="Search contacts..." name="" class="form-control search" id="exist_cont_search">
-                            <div class="input-group-prepend">
-                                <button class="input-group-text search_btn" type="submit"><i class="fas fa-search"></i></button>
-                            </div>
-                        </div>
-                    </form>
-                    <form method="POST" class="contact_add_form mt-3">
-                        {% csrf_token %}
-                        <input type="search" name="search" id="add_new_cont" class="form-control" placeholder="Add contact">
-                    </form>
                 </div>
                 <div class="card-body contacts_body">
                     <ul class="contacts">
                         {% for thread in Threads %}
-                            <!-- <li class="{% if forloop.first %}active{% endif %} contact-li" chat-id="chat_{{ thread.id }}"> -->
                             <li class="contact-li" chat-id="chat_{{ thread.id }}">
                                 <div class="d-flex bd-highlight">
                                     <div class="img_cont">
@@ -82,7 +70,7 @@
             </div>
             <div class="card d-none message_tins">
                 {% for thread in Threads %}
-                    <div class="messages-wrapper {% if forloop.first %} hide is_active {% else %} hide {% endif %}"
+                    <div class="messages-wrapper hide"
                     chat-id="chat_{{ thread.id }}" other-user-id="
                         {% if thread.first_person == user %}
                             {{ thread.second_person.id }}
@@ -120,23 +108,20 @@
                                     </div>
                                 </div>
                                 <div>
-                                    <i class="fa fa-search"></i>
+                                    <i class="fa fa-search" id="search_chat_text"></i>
                                     <span id="action_menu_btn"><i class="fas fa-ellipsis-v"></i></span>
                                 </div>
                             </div>
-                            <form method="POST" class="chat_search_form mt-3">
-                                {% csrf_token %}
-                                <input type="search" name="search" id="search_text" class="form-control" placeholder="Search chat">
-                            </form>
                             <div class="action_menu">
                                 <ul>
-                                    <li data-name="View profile"><i class="fas fa-user-circle"></i> View profile</li>
-                                    <li data-name="Add to favorites"><i class="fas fa-plus"></i> Add to favorites</li>
-                                    <li data-name="Block"><i class="fas fa-ban"></i> Block</li>
+                                    <li id="view_contact_profile" data-name="View profile">
+                                        <i class="fas fa-user-circle"></i> View {% if thread.first_person == user %}{{ thread.second_person.first_name }}{% else %} {{ thread.first_person.first_name }}{% endif %}'s profile
+                                    </li>
+                                    <li id="report_contact" data-name="Report"><i class="fas fa-flag"></i> Report</li>
                                 </ul>
                             </div>
                         </div>
-                        <div class="card-body msg_card_body">
+                        <div class="card-body msg_card_body" id="scroller">
                             <!-- All Messages -->
                             {% for chat in thread.chatmessage_thread.all %}
                                 {% if chat.user == user %}
@@ -186,6 +171,175 @@
                             </div>
                         </div>
                     </form>
+                </div>
+            </div>
+            <!-- Modals -->
+            <div class="modal fade" id="userProfileModal">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content text-center">
+                        <div class="modal-body profile">
+                            <img src="" class="rounded-circle profile_view">
+                            <h1></h1>
+                            <p class="email"></p>
+                            <span>Status:</span><br>
+                            <p class="stat"></p>
+                            <span>Description:</span><br>
+                            <p class="desc"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="contactProfileModal">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content text-center">
+                        <div class="modal-body profile">
+                            <img src="" class="rounded-circle profile_view">
+                            <h1></h1>
+                            <p class="email"></p>
+                            <span>Status:</span><br>
+                            <p class="stat"></p>
+                            <span>Description:</span><br>
+                            <p class="desc"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="editProfileModal">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content text-center">
+                        <div class="modal-body edit_modal pl-5 pr-5">
+                            <h1>Edit Profile</h1>
+                            <hr class="short_hr">
+                            <form method="POST" id="change_profile_details" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-6 text-left">
+                                        {{ user_update_form.first_name.label }}
+                                        {{ user_update_form.first_name|attr:"class:form-control mb-3 mt-2" }}
+                                    </div>
+                                    <div class="col-md-6 text-left">
+                                        {{ user_update_form.last_name.label }}
+                                        {{ user_update_form.last_name|attr:"class:form-control mb-3 mt-2" }}
+                                    </div>
+                                    <div class="col-md-12 text-left">
+                                        {{ user_profile_update_form.profile_picture.label }}
+                                        {{ user_profile_update_form.profile_picture|attr:"class:form-control mb-3 mt-2" }}
+                                    </div>
+                                    <div class="col-md-6 text-left">
+                                        {{ user_profile_update_form.description.label }}
+                                        {{ user_profile_update_form.description|attr:"class:form-control mb-3 mt-2" }}
+                                    </div>
+                                    <div class="col-md-6 text-left">
+                                        {{ user_profile_update_form.status.label }}
+                                        {{ user_profile_update_form.status|attr:"class:form-control mb-3 mt-2" }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn start my-3" type="submit">Save edit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="editPasswordModal">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content text-center">
+                        <div class="modal-body  edit_modal pl-5 pr-5">
+                            <h1>Change Password</h1>
+                            <hr class="short_hr">
+                            <form method="POST" id="change_password_details">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-12 text-left">
+                                        {{ change_password_form.old_password.label }}
+                                        {{ change_password_form.old_password|attr:"class:form-control mb-3 mt-2" }}
+                                    </div>
+                                    <div class="col-md-12 text-left">
+                                        {{ change_password_form.new_password.label }}
+                                        {{ change_password_form.new_password|attr:"class:form-control mb-3 mt-2" }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn start my-3" type="submit">Save edit</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="reportUserModal">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content text-center">
+                        <div class="modal-body  edit_modal pl-5 pr-5">
+                            <h1>Report Contact</h1>
+                            <hr class="short_hr">
+                            <form method="POST" id="report_user_form" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-12 text-left">
+                                        {{ report_user_form.subject.label }}
+                                        {{ report_user_form.subject|attr:"class:form-control mb-3 mt-2" }}
+                                    </div>
+                                    <div class="col-md-12 text-left">
+                                        {{ report_user_form.reason.label }}
+                                        {{ report_user_form.reason|attr:"class:form-control mb-3 mt-2" }}
+                                    </div>
+                                    <div class="col-md-12 text-left">
+                                        {{ report_user_form.evidence.label }}
+                                        {{ report_user_form.evidence|attr:"class:form-control mb-3 mt-2" }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn start my-3" type="submit">Report</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="addContactModal">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content text-center">
+                        <div class="modal-body  edit_modal pl-5 pr-5">
+                            <h1>Add Contact</h1>
+                            <hr class="short_hr">
+                            <form method="POST" id="add_contact_form">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-12 text-left">
+                                        {{ add_contact_form.contact_email.label }}
+                                        {{ add_contact_form.contact_email|attr:"class:form-control mb-3 mt-2" }}
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn start my-3" type="submit">Add Contact</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="searchChatModal">
+                <div class="modal-dialog modal-lg modal-dialog-centered">
+                    <div class="modal-content text-center">
+                        <div class="modal-body  edit_modal pl-5 pr-5">
+                            <h1>Search Chat</h1>
+                            <hr class="short_hr">
+                            <form method="POST" id="search_chat_form">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-12 text-left">
+                                        Chat Text
+                                        <input type="text" name="chat-text" id="chat-text" class="form-control mb-3 mt-2" placeholder="Enter the chat text..." required>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <button class="btn start my-3" type="submit">Search Chat</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
