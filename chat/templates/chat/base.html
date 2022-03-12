@@ -17,6 +17,47 @@
 </head>
 
 <body>
+    <!-- Modal -->
+
+    <div id="statusModal" class="modal fade">
+        <div class="modal-dialog modal-confirm">
+            <div class="modal-content">
+                <div class="modal-header justify-content-center">
+                    <div class="icon-box">
+                        <i class="fa"></i>
+                    </div>
+                </div>
+                <div class="modal-body text-center">
+                    <h4></h4>
+                    <p></p>
+                    <button data-dismiss="modal" class="btn btn-success">
+                        <span id="nxt_action"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="pleaseWaitModal" class="modal fade">
+        <div class="modal-dialog modal-confirm">
+            <div class="modal-content">
+                <div class="modal-header justify-content-center">
+                    <div class="icon-box">
+                        <i class="fa">&#33;</i>
+                    </div>
+                </div>
+                <div class="modal-body text-center">
+                    <h4>Info!</h4>
+                    <p>Please wait while we process this report...</p>
+                    <button data-dismiss="modal" class="btn btn-success">
+                        <span id="nxt_action">Wait</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+
     {% block content %}
     {% endblock %}
 
