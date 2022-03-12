@@ -10,7 +10,6 @@ var get_other_user = $('#other_user_picture').html()
 var other_user_picture = $.trim(get_other_user)
 
 function findOutTime (time){
-    console.log(" ")
     var splittedTime = time.split(" ")
     var theMonth = splittedTime[2]
     var theWeekday = splittedTime[0].slice(0, -1)
@@ -118,14 +117,18 @@ $('.contact-li').on('click', function (){
     $('.contacts .active').removeClass('active')
     $(this).addClass('active')
 
-    $('.welcome_greeting').addClass('d-none')
-    $('.message_tins').addClass('d-block')
+    if (!$('.welcome_greeting').hasClass('d-none')){
+        $('.welcome_greeting').addClass('d-none')
+    }
+    if (!$('.message_tins').hasClass('d-block')){
+        $('.message_tins').addClass('d-block')
+    }
 
     // message wrappers
-    let chat_id = $(this).attr('chat-id')
-    $('.messages-wrapper.is_active').removeClass('is_active')
-    $('.messages-wrapper[chat-id="' + chat_id +'"]').addClass('is_active')
-    $('.msg_card_body').scrollTop($('.msg_card_body')[0].scrollHeight)
+    let chat_id = $(this).attr('chat-id');
+    $('.messages-wrapper.is_active').removeClass('is_active');
+    $('.messages-wrapper[chat-id="' + chat_id +'"]').addClass('is_active');
+    $('.is_active #scroller').scrollTop($('.is_active #scroller')[0].scrollHeight);
 })
 
 function get_active_other_user_id(){
