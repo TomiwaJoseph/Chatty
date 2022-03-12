@@ -21,28 +21,13 @@ from django.views.decorators.csrf import csrf_exempt
 @login_required
 def show_user_profile(request):
     user_profile = CustomUser.objects.get(email=request.user.email)
-    t = render_to_string('users/ajax_pages/profile_view.html', {"user_profile": user_profile})
-    return JsonResponse({"profile": t})
-
-@login_required
-def show_user_edit_profile(request):
-    user_update_form = UserUpdateForm(instance=request.user)
-    user_profile_update_form = ChangeUserProfile(
-        instance=Profile.objects.get(user=request.user)
-        )
-    t = render_to_string('users/ajax_pages/update_profile.html', {
-        'user_update_form': user_update_form,
-        'user_profile_update_form': user_profile_update_form,
+    return JsonResponse({
+        'user_profile': str(user_profile),
+        'user_email': user_profile.email,
+        'user_picture': user_profile.profile.profile_picture.url,
+        'user_status': user_profile.profile.status,
+        'user_description': user_profile.profile.description
     })
-    return JsonResponse({"forms": t})
-
-@login_required
-def show_user_edit_password(request):
-    change_password_form = ChangePasswordForm()
-    t = render_to_string('users/ajax_pages/update_password.html', {
-        'change_password_form': change_password_form,
-    })
-    return JsonResponse({"form": t})
 
 @login_required
 def update_user_profile(request):
