@@ -25,8 +25,6 @@ urlpatterns = [
     
     # -------------- Ajax requests --------------------
     path('show_user_profile/', views.show_user_profile),
-    path('show_user_edit_profile/', views.show_user_edit_profile),
-    path('show_user_edit_password/', views.show_user_edit_password),
     path('update_user_profile/', views.update_user_profile),
     path('update_user_password/', views.update_user_password),
     # -------------- Ajax requests --------------------
