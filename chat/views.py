@@ -15,8 +15,6 @@ from django.utils.html import strip_tags
 from django.db.models import Q
 
 
-
-
 # -------------- Ajax requests --------------------
 
 @login_required
@@ -84,31 +82,16 @@ def add_contact(request):
                 (Q(first_person=other_user.first().id) | Q(second_person=other_user.first().id)) &
                 (Q(first_person=request.user.id) | Q(second_person=request.user.id))
                 )
-            if qs:
+            if qs and qs.first().blocked:
+                return JsonResponse({'status': 'blocked thread'})
+            elif qs and (qs.first().blocked == False):
                 return JsonResponse({'status': 'existing thread'})
             else:
                 Thread.objects.create(
                     first_person = request.user,
                     second_person = other_user.first(),
                 )
-            print()
     
-    return JsonResponse({'status': 'success'})
-
-@login_required
-def search_chat(request):
-    other_user =  int(request.POST.get('other_user_id'))
-    other_user = CustomUser.objects.get(id=other_user)
-    the_chat_text = request.POST.get('chat_text')
-    the_thread = Thread.objects.filter(
-            (Q(first_person=other_user.id) | Q(second_person=other_user.id)) &
-            (Q(first_person=request.user.id) | Q(second_person=request.user.id))
-        )
-    thread_messages = ChatMessage.objects.filter(thread=the_thread.first())
-    found = []
-    for chat in thread_messages:
-        print(chat.message)
-    print()
     return JsonResponse({'status': 'success'})
 
 # -------------- Ajax requests --------------------
