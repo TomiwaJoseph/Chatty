@@ -1,7 +1,7 @@
 
 
 $(document).ready(function(){
-    
+
     $('.message_tins #view_contact_profile').on('click', function() {
         let other_user_id = $('.messages-wrapper.is_active').attr('other-user-id')
         other_user_id = $.trim(other_user_id)
@@ -70,6 +70,13 @@ $(document).ready(function(){
                     $('#statusModal .modal-header').css('background', '#17a2b8')
                     $('#statusModal .modal-body p').html("You can't chat with yourself! If you want to do it, do it in the confort of your home...alone.")
                     $('#statusModal').modal('show');
+                } else if (response.status == 'blocked thread') {
+                    $('#statusModal .modal-body h4').html('Info!')
+                    $('#statusModal .icon-box i').html('&#33;')
+                    $('#statusModal .modal-body span').html('Go Back')
+                    $('#statusModal .modal-header').css('background', '#17a2b8')
+                    $('#statusModal .modal-body p').html('For some reason you cannot add this contact. Contact admin for more information about this.')
+                    $('#statusModal').modal('show');
                 } else if (response.status == 'existing thread') {
                     $('#statusModal .modal-body h4').html('Info!')
                     $('#statusModal .icon-box i').html('&#33;')
@@ -112,6 +119,7 @@ $(document).ready(function(){
             contentType: false,
             enctype: 'multipart/form-data',
             success: function(response) {
+                $('#pleaseWaitModal').modal('hide');
                 $('#statusModal .modal-body h4').html('Success!')
                 $('#statusModal .icon-box i').html('&#10003;')
                 $('#statusModal .modal-body span').html('Keep Chatting')
